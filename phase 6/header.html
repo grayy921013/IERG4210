@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+<title>Food online</title>
+<link href="layout.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="default/default.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="nivo-slider.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="jPages.css" type="text/css" media="screen" />
+<script type="text/javascript" src="jquery-1.9.0.min.js"></script>
+<script type="text/javascript" src="jPages.js"></script>
+<script type="text/javascript" src="jquery.nivo.slider.js"></script>
+<script type="text/javascript" src="incl/myLib.js"></script>
+<script type="text/javascript" src="incl/cart.js"></script>
+<script type="text/javascript" src="incl/backtotop.js"></script>
+    <script>
+  /* when document is ready */
+  $(function() {
+    /* initiate plugin */
+    $("div.holder").jPages({
+      containerID: "itemContainer"
+    });
+  });
+  </script>
+</head>
+
+<body>
+<header>
+<div id="top">
+<a name="top"></a>
+</div>
+<div id="titlefont"><p>
+Food On-line</p>
+</div>
+</header>
+<div id="fixheader">
+<span id="register"><a href="login.php">Log In</a></span>
+<p id="timer">
+</p>
+<span id="barcart"><img src="images/icon.png"/>
+Shopping Cart<div id="mydiv"> 
+<h4>
+Shopping list
+(Total: $<span id="cartTotal">0</span>)
+</h4>
+<form method="post" action="https://www.sandbox.paypal.com/cgi-bin/webscr" onsubmit="return submitcart(this)">
+<ol id="cart">No item!</ol>
+<input type="hidden" name="cmd" value="_cart">
+<input type="hidden" name="upload" value="1">
+<input type="hidden" name="business" value="zz111-facilitator@ie.cuhk.edu.hk">
+<input type="hidden" name="currency_code" value="HKD">
+<input type="hidden" name="charset" value="utf-8">
+<input type="hidden" name="custom" value="0">
+<input type="hidden" name="invoice" value="0">
+<input type="submit" value="" style="background-image:url('images/buy.jpg');width: 80px; height: 40px;border: none; cursor: pointer;" ">
+</form>
+</div></span>
+</div>
+
+
+<div id="nav">
+<ul id="bar">
+<a href="index.php">
+<img src="images/home-icon.png"/></a>
+<li><a href="fresh arrival.php">FRESH ARRIVAL</a></li>
+<li><a href="#">CATEGORY         </a>
+<ul id="categoryList">
+</ul></li>
+<li><a href="aboutus.php">ABOUT US    </a></li>
+</ul>
+<ul id="categoryList">
+</ul>
+</div>
+
+<script type="text/javascript">
+    $(window).load(function() {
+        $('#slider').nivoSlider();
+    });
+    </script>
+
+<script type="text/javascript">
+(function(){
+	function updateUI() {
+$.ajax({
+            url: "process.php?action=cat_fetchall&rnd="+new Date().getTime(), // random num to prevent IE caching
+            type: "GET",
+            async: false,
+            dataType: "JSON",
+            success: function(json){
+                    if (!json){
+                        // nothing?
+                    }else{
+                        for (var options = [], listItems = [],
+					i = 0, cat; cat = json[i]; i++) {
+				listItems.push('<li id="cat' , parseInt(cat.catid) , '"><a href="cat.php?catid=',parseInt(cat.catid),'"><span class="name">' , cat.name.escapeHTML() , '</span></a></li>');
+			}
+			el('categoryList').innerHTML = listItems.join('');
+                    }
+            }
+    });
+	}
+			
+		
+	updateUI();
+	
+	
+
+})();
+</script>
+<script type="text/javascript">
+el('timer').innerHTML=new Date().toLocaleString();
+setInterval("el('timer').innerHTML=new Date().toLocaleString();",1000);
+</script>
